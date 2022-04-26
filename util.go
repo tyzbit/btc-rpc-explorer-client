@@ -26,7 +26,18 @@ const UtilRoute string = "/util"
 
 // ExtendedPublicKeyDetails returns details for an extended public key.
 func (c Config) ExtendedPublicKeyDetails(pubkey string) (details ExtendedPublicKeyDetails, err error) {
-	body, err := getAPI(c.ExplorerURL + api + UtilRoute + "/xyzpub/" + pubkey)
+	return c.ExtendedPublicKeyDetailsPage(pubkey, 0)
+}
+
+// ExtendedPublicKeyDetailsPage returns details for an extended public key.
+// Page through the results by specifying a page
+func (c Config) ExtendedPublicKeyDetailsPage(pubkey string, page int) (details ExtendedPublicKeyDetails, err error) {
+	options := ""
+	if page != 0 {
+		options = fmt.Sprintf("?limit=%d&offset=%d", page*20, 20)
+	}
+	url := c.ExplorerURL + api + UtilRoute + "/xyzpub/" + pubkey + options
+	body, err := getAPI(url)
 	if err != nil {
 		return details, err
 	}

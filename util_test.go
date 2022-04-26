@@ -11,3 +11,13 @@ func TestExtendedPublicKeyDetails(t *testing.T) {
 		t.Error(err)
 	}
 }
+
+func TestExtendedPublicKeyDetailsPage(t *testing.T) {
+	btcapi := Config{
+		ExplorerURL: TestingEndpoint,
+	}
+	_, err := btcapi.ExtendedPublicKeyDetailsPage("xpub6EuV33a2DXxAhoJTRTnr8qnysu81AA4YHpLY6o8NiGkEJ8KADJ35T64eJsStWsmRf1xXkEANVjXFXnaUKbRtFwuSPCLfDdZwYNZToh4LBCd", 2)
+	if err != nil {
+		t.Error(err)
+	}
+}
