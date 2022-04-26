@@ -2,11 +2,11 @@ package btcapi
 
 import "testing"
 
-func TestAddressSummary(t *testing.T) {
+func TestVersion(t *testing.T) {
 	btcapi := Config{
 		ExplorerURL: TestingEndpoint,
 	}
-	_, err := btcapi.AddressSummary("34rng4QwB5pHUbGDJw1JxjLwgEU8TQuEqv")
+	_, err := btcapi.Version()
 	if err != nil {
 		t.Error(err)
 	}

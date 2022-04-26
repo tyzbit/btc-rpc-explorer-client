@@ -1,22 +1,39 @@
 package btcapi
 
 import (
+	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
 )
 
-const api = "/api/"
+type ExtendedPublicKeyDetails struct {
+	KeyType          string       `json:"keyType"`
+	OutputType       string       `json:"outputType"`
+	OutputTypeDesc   string       `json:"outputTypeDesc"`
+	BIP32Path        string       `json:"bip32Path"`
+	RelatedKeys      []RelatedKey `json:"relatedKeys"`
+	ReceiveAddresses []string     `json:"receiveAddresses"`
+	ChangeAddresses  []string     `json:"changeAddresses"`
+}
 
-func callAPI(url string) ([]byte, error) {
-	client := http.Client{}
-	resp, err := client.Get(url)
+type RelatedKey struct {
+	KeyType      string `json:"keyType"`
+	Key          string `json:"key"`
+	OutputType   string `json:"outputType"`
+	FirstAddress string `json:"firstAddress"`
+}
+
+const UtilRoute string = "/util"
+
+// ExtendedPublicKeyDetails returns details for an extended public key.
+func (c Config) ExtendedPublicKeyDetails(pubkey string) (details ExtendedPublicKeyDetails, err error) {
+	body, err := getAPI(c.ExplorerURL + api + UtilRoute + "/xyzpub/" + pubkey)
 	if err != nil {
-		return []byte{}, fmt.Errorf("unable to call url %v, err: %w", url, err)
+		return details, err
 	}
-	body, err := ioutil.ReadAll(resp.Body)
+
+	err = json.Unmarshal(body, &details)
 	if err != nil {
-		return []byte{}, fmt.Errorf("error reading body from api: %w", err)
+		return details, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
 	}
-	return body, nil
+	return details, nil
 }

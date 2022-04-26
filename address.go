@@ -3,7 +3,6 @@ package btcapi
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
 )
 
 const AddressRoute string = "/address/"
@@ -35,19 +34,16 @@ type AddressSummary struct {
 	} `json:"txHistory"`
 }
 
-// AddressSummary takes a Bitcoin address and returns an AddressSummary object
-func (c Config) AddressSummary(address string) (AddressSummary, error) {
-	var AddressSummary AddressSummary
-	// Trim any trailing slash
-	endpoint := strings.TrimRight(c.APIEndpoint, "/")
-	body, err := callAPI(endpoint + api + AddressRoute + address)
+// AddressSummary takes a Bitcoin address and returns an AddressSummary object.
+func (c Config) AddressSummary(address string) (summary AddressSummary, err error) {
+	body, err := getAPI(c.ExplorerURL + api + AddressRoute + address)
 	if err != nil {
-		return AddressSummary, err
+		return summary, err
 	}
 
-	err = json.Unmarshal(body, &AddressSummary)
+	err = json.Unmarshal(body, &summary)
 	if err != nil {
-		return AddressSummary, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return summary, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
 	}
-	return AddressSummary, nil
+	return summary, nil
 }

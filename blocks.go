@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
-	"strings"
 )
 
 const BlockRoute string = "/block/"
@@ -69,62 +68,52 @@ type BlockDetails struct {
 	} `json:"coinbaseTx"`
 }
 
-// Block takes block hash and returns a BlockDetails object
-func (c Config) BlockWithHash(hash string) (BlockDetails, error) {
-	var BlockDetails BlockDetails
-	// Trim any trailing slash
-	endpoint := strings.TrimRight(c.APIEndpoint, "/")
-	body, err := callAPI(endpoint + api + BlockRoute + hash)
+// Block takes block hash and returns a BlockDetails object.
+func (c Config) BlockWithHash(hash string) (details BlockDetails, err error) {
+	body, err := getAPI(c.ExplorerURL + api + BlockRoute + hash)
 	if err != nil {
-		return BlockDetails, err
+		return details, err
 	}
 
-	err = json.Unmarshal(body, &BlockDetails)
+	err = json.Unmarshal(body, &details)
 	if err != nil {
-		return BlockDetails, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return details, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
 	}
-	return BlockDetails, nil
+	return details, nil
 }
 
-// Block takes block height and returns a BlockDetails object
-func (c Config) BlockWithHeight(height int) (BlockDetails, error) {
-	var BlockDetails BlockDetails
-	// Trim any trailing slash
-	endpoint := strings.TrimRight(c.APIEndpoint, "/")
-	body, err := callAPI(endpoint + api + BlockRoute + fmt.Sprintf("%d", height))
+// Block takes block height and returns a BlockDetails object.
+func (c Config) BlockWithHeight(height int) (details BlockDetails, err error) {
+	body, err := getAPI(c.ExplorerURL + api + BlockRoute + fmt.Sprintf("%d", height))
 	if err != nil {
-		return BlockDetails, err
+		return details, err
 	}
 
-	err = json.Unmarshal(body, &BlockDetails)
+	err = json.Unmarshal(body, &details)
 	if err != nil {
-		return BlockDetails, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return details, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
 	}
-	return BlockDetails, nil
+	return details, nil
 }
 
 // TipHeight returns the current tip height.
-func (c Config) TipHeight() (int, error) {
-	// Trim any trailing slash
-	endpoint := strings.TrimRight(c.APIEndpoint, "/")
-	body, err := callAPI(endpoint + api + BlockTipRoute + "/height")
+func (c Config) TipHeight() (height int, err error) {
+	body, err := getAPI(c.ExplorerURL + api + BlockTipRoute + "/height")
 	if err != nil {
-		return 0, err
+		return height, err
 	}
 
-	tip, err := strconv.Atoi(string(body))
+	height, err = strconv.Atoi(string(body))
 	if err != nil {
-		return 0, fmt.Errorf("unable to parse returned body: %v", string(body))
+		return height, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
 	}
 
-	return tip, nil
+	return height, nil
 }
 
 // TipHash returns the tip hash.
-func (c Config) TipHash() (string, error) {
-	// Trim any trailing slash
-	endpoint := strings.TrimRight(c.APIEndpoint, "/")
-	body, err := callAPI(endpoint + api + BlockTipRoute + "/hash")
+func (c Config) TipHash() (hash string, err error) {
+	body, err := getAPI(c.ExplorerURL + api + BlockTipRoute + "/hash")
 	if err != nil {
 		return "", err
 	}

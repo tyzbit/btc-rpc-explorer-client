@@ -1,3 +1,3 @@
 package btcapi
 
-const TestingEndpoint string = "https://btc.qtosw.com/"
+const TestingEndpoint string = "https://bitcoinexplorer.org"
