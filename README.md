@@ -8,10 +8,10 @@ import "github.com/tyzbit/btcapi"
 
 func main() {
     address := "34rng4QwB5pHUbGDJw1JxjLwgEU8TQuEqv"
-    btcapi := Config{
+    btc := btcapi.Config{
         APIEndpoint: "https://btc-rpc-explorer.example.com",
     }
-    summary, err := btcapi.AddressSummary(address)
+    summary, err := btc.AddressSummary(address)
     if err != nil {
         fmt.Println(err)
     }
