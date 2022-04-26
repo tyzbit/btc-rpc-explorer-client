@@ -4,6 +4,8 @@ Go wrapper around the btc-rpc-explorer API
 ## Usage Example
 
 ```golang
+package main
+
 import (
     "fmt"
     "os"
