@@ -1,4 +1,4 @@
-package btcrpc
+package btcapi
 
 type Config struct {
 	APIEndpoint string

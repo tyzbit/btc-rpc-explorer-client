@@ -1,15 +1,17 @@
-# btc-rpc-explorer-client
+# btcapi
 Go wrapper around the btc-rpc-explorer API
 
 ## Usage Example
 
 ```golang
+import "github.com/tyzbit/btcapi"
+
 func main() {
     address := "34rng4QwB5pHUbGDJw1JxjLwgEU8TQuEqv"
-    btcrpc := Config{
+    btcapi := Config{
         APIEndpoint: "https://btc-rpc-explorer.example.com",
     }
-    summary, err := btcrpc.AddressSummary(address)
+    summary, err := btcapi.AddressSummary(address)
     if err != nil {
         fmt.Println(err)
     }

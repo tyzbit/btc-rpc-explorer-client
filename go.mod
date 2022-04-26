@@ -1,3 +1,3 @@
-module github.com/tyzbit/btc-rpc-explorer-client
+module github.com/tyzbit/btcapi
 
 go 1.18
