@@ -1,4 +1,4 @@
-# go-btc-rpc-explorer-api
+# btc-rpc-explorer-client
 Go wrapper around the btc-rpc-explorer API
 
 ## Usage Example
@@ -7,7 +7,7 @@ Go wrapper around the btc-rpc-explorer API
 func main() {
     address := "34rng4QwB5pHUbGDJw1JxjLwgEU8TQuEqv"
     btcrpc := Config{
-        APIEndpoint: TestingEndpoint,
+        APIEndpoint: "https://btc-rpc-explorer.example.com",
     }
     summary, err := btcrpc.AddressSummary(address)
     if err != nil {

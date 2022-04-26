@@ -1,3 +1,3 @@
 package btcrpc
 
-const TestingEndpoint string = "https://bitcoinexplorer.org/"
+const TestingEndpoint string = "https://btc.qtosw.com/"
