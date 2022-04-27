@@ -8,10 +8,10 @@ import (
 )
 
 type Price struct {
-	USD string `json:"usd"`
-	EUR string `json:"eur"`
-	GBP string `json:"gbp"`
-	XAU string `json:"xau"`
+	USD float64
+	EUR float64
+	GBP float64
+	XAU float64
 }
 
 const PriceRoute string = "/price"
@@ -23,11 +23,27 @@ func (c Config) Price() (price Price, err error) {
 		return price, err
 	}
 
-	err = json.Unmarshal(body, &price)
+	var priceResponse struct {
+		USD string `json:"usd"`
+		EUR string `json:"eur"`
+		GBP string `json:"gbp"`
+		XAU string `json:"xau"`
+	}
+	err = json.Unmarshal(body, &priceResponse)
 	if err != nil {
 		return price, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
 	}
-	return price, nil
+
+	usd, _ := strconv.ParseFloat(strings.ReplaceAll(priceResponse.USD, ",", ""), 64)
+	eur, _ := strconv.ParseFloat(strings.ReplaceAll(priceResponse.EUR, ",", ""), 64)
+	gbp, _ := strconv.ParseFloat(strings.ReplaceAll(priceResponse.GBP, ",", ""), 64)
+	xau, _ := strconv.ParseFloat(strings.ReplaceAll(priceResponse.XAU, ",", ""), 64)
+	return Price{
+		USD: usd,
+		EUR: eur,
+		GBP: gbp,
+		XAU: xau,
+	}, nil
 }
 
 // Price returns the price of 1BTC in one of: USD, EUR, GBP and XAU.
