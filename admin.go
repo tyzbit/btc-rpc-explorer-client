@@ -8,14 +8,15 @@ const VersionRoute string = "/version"
 
 // ExtendedPublicKeyDetails returns details for an extended public key.
 func (c Config) Version() (version string, err error) {
-	body, err := getAPI(c.ExplorerURL + api + VersionRoute)
+	url := c.ExplorerURL + api + VersionRoute
+	body, err := getAPI(url)
 	if err != nil {
 		return version, err
 	}
 
 	version = string(body)
 	if err != nil {
-		return version, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return version, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return version, nil
 }

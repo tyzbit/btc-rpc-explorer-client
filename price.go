@@ -18,7 +18,8 @@ const PriceRoute string = "/price"
 
 // Price returns the price of 1BTC in USD, EUR, GBP and XAU.
 func (c Config) Price() (price Price, err error) {
-	body, err := getAPI(c.ExplorerURL + api + PriceRoute)
+	url := c.ExplorerURL + api + PriceRoute
+	body, err := getAPI(url)
 	if err != nil {
 		return price, err
 	}
@@ -31,7 +32,7 @@ func (c Config) Price() (price Price, err error) {
 	}
 	err = json.Unmarshal(body, &priceResponse)
 	if err != nil {
-		return price, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return price, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 
 	usd, _ := strconv.ParseFloat(strings.ReplaceAll(priceResponse.USD, ",", ""), 64)
@@ -48,28 +49,30 @@ func (c Config) Price() (price Price, err error) {
 
 // Price returns the price of 1BTC in one of: USD, EUR, GBP and XAU.
 func (c Config) PriceIn(currency string) (price string, err error) {
-	body, err := getAPI(c.ExplorerURL + api + PriceRoute + "/" + strings.ToLower(currency))
+	url := c.ExplorerURL + api + PriceRoute + "/" + strings.ToLower(currency)
+	body, err := getAPI(url)
 	if err != nil {
 		return price, err
 	}
 
 	price = string(body)
 	if err != nil {
-		return price, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return price, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return price, nil
 }
 
 // MarketCapIn returns the market cap in one of: USD, EUR, GBP and XAU.
 func (c Config) MarketCapIn(currency string) (cap float64, err error) {
-	body, err := getAPI(c.ExplorerURL + api + PriceRoute + "/" + strings.ToLower(currency) + "/marketcap")
+	url := c.ExplorerURL + api + PriceRoute + "/" + strings.ToLower(currency) + "/marketcap"
+	body, err := getAPI(url)
 	if err != nil {
 		return cap, err
 	}
 
 	cap, err = strconv.ParseFloat(string(body), 64)
 	if err != nil {
-		return cap, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return cap, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return cap, nil
 }
@@ -77,14 +80,15 @@ func (c Config) MarketCapIn(currency string) (cap float64, err error) {
 // PriceInSats returns the value in satoshis of one unit of currency for one of:
 // USD, EUR, GBP and XAU.
 func (c Config) PriceInSats(currency string) (satoshis int, err error) {
-	body, err := getAPI(c.ExplorerURL + api + PriceRoute + "/" + strings.ToLower(currency) + "/sats")
+	url := c.ExplorerURL + api + PriceRoute + "/" + strings.ToLower(currency) + "/sats"
+	body, err := getAPI(url)
 	if err != nil {
 		return satoshis, err
 	}
 
 	satoshis, err = strconv.Atoi(string(body))
 	if err != nil {
-		return satoshis, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return satoshis, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return satoshis, nil
 }

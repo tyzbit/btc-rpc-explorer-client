@@ -23,28 +23,30 @@ const BlockchainRoute string = "/blockchain"
 
 // Coins returns the current supply of Bitcoin.
 func (c Config) Coins() (coins float64, err error) {
-	body, err := getAPI(c.ExplorerURL + api + BlockchainRoute + "/coins")
+	url := c.ExplorerURL + api + BlockchainRoute + "/coins"
+	body, err := getAPI(url)
 	if err != nil {
 		return 0, err
 	}
 
 	coins, err = strconv.ParseFloat(string(body), 64)
 	if err != nil {
-		return 0, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return 0, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return coins, nil
 }
 
 // UTXOSet returns the current UTXO snapshot.
 func (c Config) UTXOSet() (set UTXSOSet, err error) {
-	body, err := getAPI(c.ExplorerURL + api + BlockchainRoute + "/utxo-set")
+	url := c.ExplorerURL + api + BlockchainRoute + "/utxo-set"
+	body, err := getAPI(url)
 	if err != nil {
 		return set, err
 	}
 
 	err = json.Unmarshal(body, &set)
 	if err != nil {
-		return set, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return set, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return set, nil
 }

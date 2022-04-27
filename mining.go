@@ -70,63 +70,68 @@ const MiningRoute string = "/mining"
 
 // HashRate returns details of the current hashrate.
 func (c Config) Hashrate() (hashrate MiningHashrate, err error) {
-	body, err := getAPI(c.ExplorerURL + api + MiningRoute + "/hashrate")
+	url := c.ExplorerURL + api + MiningRoute + "/hashrate"
+	body, err := getAPI(url)
 	if err != nil {
 		return hashrate, err
 	}
 
 	err = json.Unmarshal(body, &hashrate)
 	if err != nil {
-		return hashrate, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return hashrate, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return hashrate, nil
 }
 
 // UTXOSet returns the current UTXO snapshot.
 func (c Config) DifficultyAdjustmentEstimate() (estimate float64, err error) {
-	body, err := getAPI(c.ExplorerURL + api + MiningRoute + "/diff-adj-estimate")
+	url := c.ExplorerURL + api + MiningRoute + "/diff-adj-estimate"
+	body, err := getAPI(url)
 	if err != nil {
 		return estimate, err
 	}
 
 	estimate, err = strconv.ParseFloat(string(body), 64)
 	if err != nil {
-		return estimate, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return estimate, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return estimate, nil
 }
 
 // NextBlock returns details about the nextblock.
 func (c Config) NextBlock() (details BlockMiningDetails, err error) {
-	body, err := getAPI(c.ExplorerURL + api + MiningRoute + "/next-block")
+	url := c.ExplorerURL + api + MiningRoute + "/next-block"
+	body, err := getAPI(url)
 	if err != nil {
 		return details, err
 	}
 
 	err = json.Unmarshal(body, &details)
 	if err != nil {
-		return details, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return details, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return details, nil
 }
 
 // NextBlockTXIDs returns transaction IDs that might be included in the next block.
 func (c Config) NextBlockTXIDs() (txids []string, err error) {
-	body, err := getAPI(c.ExplorerURL + api + MiningRoute + "/next-block/txids")
+	url := c.ExplorerURL + api + MiningRoute + "/next-block/txids"
+	body, err := getAPI(url)
 	if err != nil {
 		return txids, err
 	}
 
 	err = json.Unmarshal(body, &txids)
 	if err != nil {
-		return txids, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return txids, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return txids, nil
 }
 
 // NextBlockIncludes returns whether a transaction is likely to be included in the next block.
 func (c Config) NextBlockIncludes(txid string) (included bool, err error) {
-	body, err := getAPI(c.ExplorerURL + api + MiningRoute + "/next-block/includes/" + txid)
+	url := c.ExplorerURL + api + MiningRoute + "/next-block/includes/" + txid
+	body, err := getAPI(url)
 	if err != nil {
 		return included, err
 	}
@@ -134,7 +139,7 @@ func (c Config) NextBlockIncludes(txid string) (included bool, err error) {
 	var response Included
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return included, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return included, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	included = response.Included
 	return included, nil
@@ -142,14 +147,15 @@ func (c Config) NextBlockIncludes(txid string) (included bool, err error) {
 
 // MinerSummery returns miner summary since the period specified (ex: 1d)
 func (c Config) MinerSummary(since string) (summary MinerSummary, err error) {
-	body, err := getAPI(c.ExplorerURL + api + MiningRoute + "/miner-summary?since=" + since)
+	url := c.ExplorerURL + api + MiningRoute + "/miner-summary?since=" + since
+	body, err := getAPI(url)
 	if err != nil {
 		return summary, err
 	}
 
 	err = json.Unmarshal(body, &summary)
 	if err != nil {
-		return summary, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return summary, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return summary, nil
 }

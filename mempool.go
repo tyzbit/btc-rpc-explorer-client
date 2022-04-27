@@ -17,28 +17,30 @@ type Fees struct {
 
 // MempoolCount returns the number of transactions in the mempool.
 func (c Config) MempoolCount() (count int, err error) {
-	body, err := getAPI(c.ExplorerURL + api + MempoolRoute + "/count")
+	url := c.ExplorerURL + api + MempoolRoute + "/count"
+	body, err := getAPI(url)
 	if err != nil {
 		return count, err
 	}
 
 	count, err = strconv.Atoi(string(body))
 	if err != nil {
-		return count, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return count, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return count, nil
 }
 
 // Fees returns the recommended fees to get included within pre-set deadlines.
 func (c Config) Fees() (fees Fees, err error) {
-	body, err := getAPI(c.ExplorerURL + api + MempoolRoute + "/fees")
+	url := c.ExplorerURL + api + MempoolRoute + "/fees"
+	body, err := getAPI(url)
 	if err != nil {
 		return fees, err
 	}
 
 	err = json.Unmarshal(body, &fees)
 	if err != nil {
-		return fees, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return fees, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 	return fees, nil
 }

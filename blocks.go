@@ -70,7 +70,8 @@ type BlockDetails struct {
 
 // Block takes block hash and returns a BlockDetails object.
 func (c Config) BlockWithHash(hash string) (details BlockDetails, err error) {
-	body, err := getAPI(c.ExplorerURL + api + BlockRoute + hash)
+	url := c.ExplorerURL + api + BlockRoute + hash
+	body, err := getAPI(url)
 	if err != nil {
 		return details, err
 	}
@@ -84,7 +85,8 @@ func (c Config) BlockWithHash(hash string) (details BlockDetails, err error) {
 
 // Block takes block height and returns a BlockDetails object.
 func (c Config) BlockWithHeight(height int) (details BlockDetails, err error) {
-	body, err := getAPI(c.ExplorerURL + api + BlockRoute + fmt.Sprintf("%d", height))
+	url := c.ExplorerURL + api + BlockRoute + fmt.Sprintf("%d", height)
+	body, err := getAPI(url)
 	if err != nil {
 		return details, err
 	}
@@ -98,14 +100,15 @@ func (c Config) BlockWithHeight(height int) (details BlockDetails, err error) {
 
 // TipHeight returns the current tip height.
 func (c Config) TipHeight() (height int, err error) {
-	body, err := getAPI(c.ExplorerURL + api + BlockTipRoute + "/height")
+	url := c.ExplorerURL + api + BlockTipRoute + "/height"
+	body, err := getAPI(url)
 	if err != nil {
 		return height, err
 	}
 
 	height, err = strconv.Atoi(string(body))
 	if err != nil {
-		return height, fmt.Errorf("unable to parse returned body: %v, err: %w", string(body), err)
+		return height, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
 	}
 
 	return height, nil
