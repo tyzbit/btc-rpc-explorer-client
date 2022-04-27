@@ -16,7 +16,7 @@ func (c Config) Version() (version string, err error) {
 
 	version = string(body)
 	if err != nil {
-		return version, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return version, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return version, nil
 }

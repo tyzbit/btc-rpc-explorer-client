@@ -78,7 +78,7 @@ func (c Config) BlockWithHash(hash string) (details BlockDetails, err error) {
 
 	err = json.Unmarshal(body, &details)
 	if err != nil {
-		return details, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return details, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return details, nil
 }
@@ -93,7 +93,7 @@ func (c Config) BlockWithHeight(height int) (details BlockDetails, err error) {
 
 	err = json.Unmarshal(body, &details)
 	if err != nil {
-		return details, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return details, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return details, nil
 }
@@ -108,7 +108,7 @@ func (c Config) TipHeight() (height int, err error) {
 
 	height, err = strconv.Atoi(string(body))
 	if err != nil {
-		return height, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return height, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 
 	return height, nil

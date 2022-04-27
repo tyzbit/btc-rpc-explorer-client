@@ -43,7 +43,7 @@ func (c Config) AddressSummary(address string) (summary AddressSummary, err erro
 
 	err = json.Unmarshal(body, &summary)
 	if err != nil {
-		return summary, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return summary, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return summary, nil
 }

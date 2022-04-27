@@ -44,7 +44,7 @@ func (c Config) ExtendedPublicKeyDetailsPage(pubkey string, limit int, offset in
 
 	err = json.Unmarshal(body, &details)
 	if err != nil {
-		return details, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return details, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return details, nil
 }

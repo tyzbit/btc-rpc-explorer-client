@@ -32,7 +32,7 @@ func (c Config) Price() (price Price, err error) {
 	}
 	err = json.Unmarshal(body, &priceResponse)
 	if err != nil {
-		return price, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return price, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 
 	usd, _ := strconv.ParseFloat(strings.ReplaceAll(priceResponse.USD, ",", ""), 64)
@@ -57,7 +57,7 @@ func (c Config) PriceIn(currency string) (price string, err error) {
 
 	price = string(body)
 	if err != nil {
-		return price, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return price, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return price, nil
 }
@@ -72,7 +72,7 @@ func (c Config) MarketCapIn(currency string) (cap float64, err error) {
 
 	cap, err = strconv.ParseFloat(string(body), 64)
 	if err != nil {
-		return cap, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return cap, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return cap, nil
 }
@@ -88,7 +88,7 @@ func (c Config) PriceInSats(currency string) (satoshis int, err error) {
 
 	satoshis, err = strconv.Atoi(string(body))
 	if err != nil {
-		return satoshis, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return satoshis, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return satoshis, nil
 }

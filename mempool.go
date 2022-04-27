@@ -25,7 +25,7 @@ func (c Config) MempoolCount() (count int, err error) {
 
 	count, err = strconv.Atoi(string(body))
 	if err != nil {
-		return count, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return count, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return count, nil
 }
@@ -40,7 +40,7 @@ func (c Config) Fees() (fees Fees, err error) {
 
 	err = json.Unmarshal(body, &fees)
 	if err != nil {
-		return fees, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return fees, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return fees, nil
 }

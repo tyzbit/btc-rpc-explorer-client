@@ -49,7 +49,7 @@ func (c Config) Tx(tx string) (TXSummary, error) {
 
 	err = json.Unmarshal(body, &TXSummary)
 	if err != nil {
-		return TXSummary, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return TXSummary, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return TXSummary, nil
 }

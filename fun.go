@@ -24,7 +24,7 @@ func (c Config) Quotes() (quotes []QuoteDetails, err error) {
 
 	err = json.Unmarshal(body, &quotes)
 	if err != nil {
-		return quotes, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return quotes, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return quotes, nil
 }
@@ -38,7 +38,7 @@ func (c Config) Quote(index int) (quote QuoteDetails, err error) {
 
 	err = json.Unmarshal(body, &quote)
 	if err != nil {
-		return quote, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return quote, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return quote, nil
 }
@@ -52,7 +52,7 @@ func (c Config) RandomQuote() (quote QuoteDetails, err error) {
 
 	err = json.Unmarshal(body, &quote)
 	if err != nil {
-		return quote, fmt.Errorf("error unmarshalling json: %w, body: %v", err, string(body))
+		return quote, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return quote, nil
 }

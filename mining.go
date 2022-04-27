@@ -78,7 +78,7 @@ func (c Config) Hashrate() (hashrate MiningHashrate, err error) {
 
 	err = json.Unmarshal(body, &hashrate)
 	if err != nil {
-		return hashrate, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return hashrate, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return hashrate, nil
 }
@@ -93,7 +93,7 @@ func (c Config) DifficultyAdjustmentEstimate() (estimate float64, err error) {
 
 	estimate, err = strconv.ParseFloat(string(body), 64)
 	if err != nil {
-		return estimate, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return estimate, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return estimate, nil
 }
@@ -108,7 +108,7 @@ func (c Config) NextBlock() (details BlockMiningDetails, err error) {
 
 	err = json.Unmarshal(body, &details)
 	if err != nil {
-		return details, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return details, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return details, nil
 }
@@ -123,7 +123,7 @@ func (c Config) NextBlockTXIDs() (txids []string, err error) {
 
 	err = json.Unmarshal(body, &txids)
 	if err != nil {
-		return txids, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return txids, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return txids, nil
 }
@@ -139,7 +139,7 @@ func (c Config) NextBlockIncludes(txid string) (included bool, err error) {
 	var response Included
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return included, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return included, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	included = response.Included
 	return included, nil
@@ -155,7 +155,7 @@ func (c Config) MinerSummary(since string) (summary MinerSummary, err error) {
 
 	err = json.Unmarshal(body, &summary)
 	if err != nil {
-		return summary, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return summary, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return summary, nil
 }

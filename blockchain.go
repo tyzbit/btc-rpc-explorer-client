@@ -31,7 +31,7 @@ func (c Config) Coins() (coins float64, err error) {
 
 	coins, err = strconv.ParseFloat(string(body), 64)
 	if err != nil {
-		return 0, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return 0, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return coins, nil
 }
@@ -46,7 +46,7 @@ func (c Config) UTXOSet() (set UTXSOSet, err error) {
 
 	err = json.Unmarshal(body, &set)
 	if err != nil {
-		return set, fmt.Errorf("unable to parse returned body: %v, url: %v err: %w", string(body), url, err)
+		return set, fmt.Errorf("unable to parse returned body: %w", err)
 	}
 	return set, nil
 }
