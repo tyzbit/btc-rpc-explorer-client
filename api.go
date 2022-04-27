@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-const api = "/api/"
+const api = "/api"
 
 func getAPI(url string) ([]byte, error) {
 	client := http.Client{}
