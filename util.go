@@ -31,10 +31,10 @@ func (c Config) ExtendedPublicKeyDetails(pubkey string) (details ExtendedPublicK
 
 // ExtendedPublicKeyDetailsPage returns details for an extended public key.
 // Page through the results by specifying a page
-func (c Config) ExtendedPublicKeyDetailsPage(pubkey string, limit int, page int) (details ExtendedPublicKeyDetails, err error) {
+func (c Config) ExtendedPublicKeyDetailsPage(pubkey string, limit int, offset int) (details ExtendedPublicKeyDetails, err error) {
 	options := ""
-	if page != 0 {
-		options = fmt.Sprintf("?limit=%d&offset=%d", limit, 20*page)
+	if offset != 0 || limit != 0 {
+		options = fmt.Sprintf("?limit=%d&offset=%d", limit, offset)
 	}
 	url := c.ExplorerURL + api + UtilRoute + "/xyzpub/" + pubkey + options
 	body, err := getAPI(url)
